@@ -24,7 +24,13 @@ class SignalTiming(BaseModel):
     """Represents a signal timing recommendation"""
 
     phase_timings: Dict[str, int]  # e.g., {"north-south": 45, "east-west": 30}
-    turn_signal_timings: Optional[Dict[str, int]]
+    turn_signal_timings: Optional[Dict[str, int]] = None
     cycle_length: int
     priority_phases: List[str]
     reasoning: str
+
+
+class PlanVerification(BaseModel):
+    challenge_addressed: bool
+    explanation: str
+    confidence: float

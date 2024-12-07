@@ -36,11 +36,11 @@ PLANNING_PROMPT = {
     3. Propose analysis steps in order (4-6 steps, each step should build on previous steps)
 
     Format your response as JSON with the following structure:
-    {
+    {{
         "challenges": [list of key challenges],
         "factors": [list of factors to analyze],
         "steps": [ordered list of analysis steps]
-    }
+    }}
 
     Here is the scenario:
     {scenario}
@@ -74,5 +74,39 @@ PLANNING_PROMPT = {
             "Calculate optimal cycle lengths for different periods",
             "Develop timing plans with specific phase splits and transition strategies",
         ],
+    },
+}
+
+
+ANALYSIS_PROMPT = {
+    "system_message": """You are an expert traffic engineer focusing on signal timing optimization. You must always provide:
+    1. Specific phase timings for each direction (north-south and east-west at minimum)
+    2. A complete cycle length that accounts for all phases
+    3. Clear priority phases based on traffic patterns
+    4. Turn signal timings when needed for safety or efficiency
+    
+    Your recommendations must follow standard traffic engineering principles:
+    - Minimum green time of 15 seconds per phase
+    - Maximum cycle length of 180 seconds
+    - Phase timings must sum to the total cycle length
+    - Higher-volume approaches should get proportionally more green time""",
+    "user_template": """
+    Based on this traffic scenario and analysis plan, provide detailed signal timing recommendations.
+
+    SCENARIO:
+    {scenario}
+
+    ANALYSIS PLAN:
+    {plan}
+
+    Follow each step in the plan and provide your timing recommendations in the specified JSON format.
+    Remember to address each challenge and factor listed in the plan.
+    """,
+    "example_output": {
+        "phase_timings": {"north-south": 45, "east-west": 30},
+        "turn_signal_timings": {"north": 15, "south": 15},
+        "cycle_length": 90,
+        "priority_phases": ["north-south"],
+        "reasoning": "Detailed explanation of the timing decisions...",
     },
 }
